@@ -239,14 +239,14 @@ namespace RecipePal.Data
                 new Chef
                 {
                     Id = 1,
-                    Username = "John J. Jingleheimer",
+                    UserName = "John J. Jingleheimer",
                     Password = "hash",
                     Email = "jjingleheimer@northpole.com"
                 },
                 new Chef
                 {
                     Id = 2,
-                    Username = "wwishy",
+                    UserName = "wwishy",
                     Password = "P@55w0RD",
                     Email = "jsw@example.com"
                 });
