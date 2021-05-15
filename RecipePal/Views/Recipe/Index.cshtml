@@ -1,0 +1,33 @@
+﻿@model RecipeViewModel
+
+<h1 class="text-center">@Model.Recipe.Title</h1>
+
+@if (Model.CanEdit)
+{
+<button class="btn btn-success">
+    Add a note
+</button>
+}
+
+<div class="card-columns">
+    @foreach (var note in Model.Recipe.Notes)
+    {
+    <div class="card text-white bg-dark">
+        <div class="card-body">
+            <h5 class="card-header">@note.Title</h5>
+            <p class="card-text">@note.Text</p>
+        </div>
+        @if (Model.CanEdit)
+        {
+        <div class="card-footer">
+            <button class="btn btn-warning">
+                Edit
+            </button>
+            <button class="btn btn-danger">
+                Delete
+            </button>
+        </div>
+        }
+    </div>
+    }
+</div>

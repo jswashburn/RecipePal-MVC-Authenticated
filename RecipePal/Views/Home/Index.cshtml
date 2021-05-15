@@ -1,0 +1,29 @@
+﻿@model AllCookbooksViewModel
+
+<div class="text-center">
+    <h1 class="display-4">Top Cookbooks</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Chef</th>
+                <th>Date Added</th>
+                <th>Likes</th>
+                <th>Dislikes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cookbook in Model.Cookbooks)
+            {
+            <tr>
+                <td><a asp-controller="Cookbook" asp-route-id="@cookbook.Id">@cookbook.Title</a></td>
+                <td>@cookbook.Chef.Username</td>
+                <td>@cookbook.CreatedAt.ToShortDateString()</td>
+                <td>@cookbook.Likes</td>
+                <td>@cookbook.Dislikes</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

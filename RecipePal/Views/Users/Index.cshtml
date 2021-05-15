@@ -1,0 +1,47 @@
+﻿@model ChefViewModel
+
+<h1>Hi, @Model.Chef.Username!</h1>
+
+<div class="text-center">
+    <h2>Your cookbooks</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <button class="btn btn-success">
+                        Add
+                    </button>
+                </th>
+                <th>Title</th>
+                <th>Date Added</th>
+                <th>Likes</th>
+                <th>Dislikes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cookbook in Model.Chef.Cookbooks)
+            {
+            <tr>
+                <td>
+                    <div class="btn-group" role="group">
+                        <form method="post">
+                            <button type="submit" class="btn btn-outline-danger rounded-pill m-1">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </td>
+                <td>
+                    <a asp-controller="Cookbook" 
+                       asp-route-id="@cookbook.Id">
+                        @cookbook.Title
+                    </a>
+                </td>
+                <td>@cookbook.CreatedAt.ToShortDateString()</td>
+                <td>@cookbook.Likes</td>
+                <td>@cookbook.Dislikes</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
