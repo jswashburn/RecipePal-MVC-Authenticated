@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipePal.Models
 {
@@ -9,6 +10,7 @@ namespace RecipePal.Models
         [RegularExpression(@"\w{6,20}")]
         public string UserName { get; set; }
 
+        [NotMapped]
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
