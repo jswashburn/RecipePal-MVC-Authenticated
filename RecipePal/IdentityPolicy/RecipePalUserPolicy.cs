@@ -21,10 +21,10 @@ namespace RecipePal.IdentityPolicy
                     Description = "Can't have that name its already mine >:("
                 });
 
-            if (appUser.NormalizedEmail.EndsWith(".boogle"))
+            if (appUser.NormalizedEmail.EndsWith("boogle.com"))
                 validationErrors.Add(new IdentityError
                 {
-                    Description = "Can't use .boogle emails"
+                    Description = "Can't use boogle emails"
                 });
 
             return validationErrors.Count == 0 ?
