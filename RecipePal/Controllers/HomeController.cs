@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RecipePal.Models;
 using RecipePal.Services;
 using RecipePal.ViewModels;
@@ -15,6 +16,7 @@ namespace RecipePal.Controllers
             _cookbookBrowsingService = cookbookBrowsingService;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             AllCookbooksViewModel vm = _cookbookBrowsingService.CreateAllCookbooksViewModel();

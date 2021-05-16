@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RecipePal.Models;
 using System.Threading.Tasks;
 
 namespace RecipePal.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         readonly UserManager<AppUser> _userManager;
@@ -21,8 +23,10 @@ namespace RecipePal.Controllers
             _passwordValidator = passwordValidator;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            AppUser appUser = await _userManager.GetUserAsync(HttpContext.User);
+            TempData["UserName"] = appUser.UserName;
             return View(_userManager.Users);
         }
 
