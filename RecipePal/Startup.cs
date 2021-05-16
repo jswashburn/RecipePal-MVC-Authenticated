@@ -43,6 +43,15 @@ namespace RecipePal
             services.AddScoped<ICookbookBrowsingService, CookbookBrowsingService>();
             services.AddScoped<IRecipeBrowsingService, RecipeBrowsingService>();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireDigit = true;
+            });
+
             services.AddRazorPages();
         }
 
