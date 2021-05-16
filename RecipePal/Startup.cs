@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RecipePal.Data;
+using RecipePal.IdentityPolicy;
 using RecipePal.Models;
 using RecipePal.Repositories;
 using RecipePal.Services;
@@ -34,6 +35,8 @@ namespace RecipePal
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Identity"));
             });
+
+            services.AddTransient<IPasswordValidator<AppUser>, RecipePalPasswordPolicy>();
 
             services.AddIdentity<AppUser, IdentityRole>()
                     .AddEntityFrameworkStores<AppIdentityDbContext>()
