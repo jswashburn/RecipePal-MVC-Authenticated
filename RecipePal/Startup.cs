@@ -10,6 +10,7 @@ using RecipePal.IdentityPolicy;
 using RecipePal.Models;
 using RecipePal.Repositories;
 using RecipePal.Services;
+using System;
 
 namespace RecipePal
 {
@@ -55,6 +56,13 @@ namespace RecipePal
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireDigit = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".AspNetCore.Identity.Application";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
             });
 
             services.AddRazorPages();
