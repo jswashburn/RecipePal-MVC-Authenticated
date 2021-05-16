@@ -21,7 +21,7 @@ namespace RecipePal.IdentityPolicy
                     Description = "Password cannot contain username"
                 });
 
-            return validationErrors.Count == 0 ? 
+            return validationErrors.Count == 0 ?
                 IdentityResult.Success : IdentityResult.Failed(validationErrors.ToArray());
         }
     }

@@ -14,7 +14,7 @@ namespace RecipePal.Controllers
         readonly UserManager<AppUser> _userManager;
         readonly SignInManager<AppUser> _signInManager;
 
-        public AccountController(UserManager<AppUser> userManager, 
+        public AccountController(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
@@ -62,7 +62,7 @@ namespace RecipePal.Controllers
                     if (signInResult.Succeeded)
                         return Redirect(login.ReturnUrl ?? "/");
                 }
-                ModelState.AddModelError(nameof(login.Email), 
+                ModelState.AddModelError(nameof(login.Email),
                     "Login Failed: Invalid email or password");
             }
             return View(login);

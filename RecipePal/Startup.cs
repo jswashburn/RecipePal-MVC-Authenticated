@@ -26,28 +26,36 @@ namespace RecipePal
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddRazorPages();
 
-            services.AddDbContext<RPDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("RPDbContext");
-            });
+            AddDbContexts(services);
+            AddIdentity(services);
+            AddRecipePalServices(services);
+            ConfigureOptions(services);
+            ConfigureCookies(services);
+        }
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("Identity"));
-            });
+        #region Configuration Methods
 
-            services.AddTransient<IPasswordValidator<AppUser>, RecipePalPasswordPolicy>();
-            services.AddTransient<IUserValidator<AppUser>, RecipePalUserPolicy>();
-
-            services.AddIdentity<AppUser, IdentityRole>()
-                    .AddEntityFrameworkStores<AppIdentityDbContext>()
-                    .AddDefaultTokenProviders();
-
+        static void AddRecipePalServices(IServiceCollection services)
+        {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ICookbookBrowsingService, CookbookBrowsingService>();
             services.AddScoped<IRecipeBrowsingService, RecipeBrowsingService>();
+        }
 
+        static void ConfigureCookies(IServiceCollection services)
+        {
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".AspNetCore.Identity.Application";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+            });
+        }
+
+        static void ConfigureOptions(IServiceCollection services)
+        {
             services.Configure<IdentityOptions>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -57,16 +65,32 @@ namespace RecipePal
                 options.Password.RequireLowercase = true;
                 options.Password.RequireDigit = true;
             });
+        }
 
-            services.ConfigureApplicationCookie(options =>
+        static void AddIdentity(IServiceCollection services)
+        {
+            services.AddTransient<IPasswordValidator<AppUser>, RecipePalPasswordPolicy>();
+            services.AddTransient<IUserValidator<AppUser>, RecipePalUserPolicy>();
+
+            services.AddIdentity<AppUser, IdentityRole>()
+                    .AddEntityFrameworkStores<AppIdentityDbContext>()
+                    .AddDefaultTokenProviders();
+        }
+
+        void AddDbContexts(IServiceCollection services)
+        {
+            services.AddDbContext<RPDbContext>(options =>
             {
-                options.Cookie.Name = ".AspNetCore.Identity.Application";
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-                options.SlidingExpiration = true;
+                options.UseInMemoryDatabase("RPDbContext");
             });
 
-            services.AddRazorPages();
+            services.AddDbContext<AppIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Identity"));
+            });
         }
+
+        #endregion
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
