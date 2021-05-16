@@ -240,13 +240,11 @@ namespace RecipePal.Data
                 {
                     Id = 1,
                     UserName = "John J. Jingleheimer",
-                    Email = "jjingleheimer@northpole.com"
                 },
                 new Profile
                 {
                     Id = 2,
                     UserName = "wwishy",
-                    Email = "jsw@example.com"
                 });
         }
     }

@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RecipePal.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipePal.ViewModels
 {
     public class LoginViewModel
     {
-        [Required]
-        [RegularExpression(@"\w{6,20}")]
-        public string UserName { get; set; }
+
+        public Profile Profile { get; set; }
 
         [NotMapped]
         [Required]

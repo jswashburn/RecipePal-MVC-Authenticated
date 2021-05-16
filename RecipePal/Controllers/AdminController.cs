@@ -129,7 +129,6 @@ namespace RecipePal.Controllers
             {
                 var appUser = new AppUser
                 {
-                    UserName = login.UserName,
                     Email = login.Email
                 };
 
