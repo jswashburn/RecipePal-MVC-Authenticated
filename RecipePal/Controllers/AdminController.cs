@@ -22,6 +22,22 @@ namespace RecipePal.Controllers
             return View(_userManager.Users);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            AppUser appUser = await _userManager.FindByIdAsync(id);
+            if (appUser != null)
+            {
+                IdentityResult deleteResult = await _userManager.DeleteAsync(appUser);
+                if (!deleteResult.Succeeded)
+                    foreach (IdentityError err in deleteResult.Errors)
+                        ModelState.AddModelError("", err.Description);
+            }
+            else ModelState.AddModelError("", "User not found");
+
+            return RedirectToAction(nameof(Index));
+        }
+
         public async Task<IActionResult> Update(string id)
         {
             AppUser appUser = await _userManager.FindByIdAsync(id);
