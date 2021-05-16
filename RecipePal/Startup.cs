@@ -37,6 +37,7 @@ namespace RecipePal
             });
 
             services.AddTransient<IPasswordValidator<AppUser>, RecipePalPasswordPolicy>();
+            services.AddTransient<IUserValidator<AppUser>, RecipePalUserPolicy>();
 
             services.AddIdentity<AppUser, IdentityRole>()
                     .AddEntityFrameworkStores<AppIdentityDbContext>()
