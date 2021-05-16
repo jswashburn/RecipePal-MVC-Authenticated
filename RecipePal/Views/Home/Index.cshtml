@@ -1,4 +1,4 @@
-﻿@model AllCookbooksViewModel
+﻿@model RecipePal.ViewModels.AllCookbooksViewModel
 
 <div class="text-center">
     <h1 class="display-4">Top Cookbooks</h1>
@@ -18,7 +18,7 @@
             {
             <tr>
                 <td><a asp-controller="Cookbook" asp-route-id="@cookbook.Id">@cookbook.Title</a></td>
-                <td>@cookbook.Chef.UserName</td>
+                <td>@cookbook.OwnerProfile.UserName</td>
                 <td>@cookbook.CreatedAt.ToShortDateString()</td>
                 <td>@cookbook.Likes</td>
                 <td>@cookbook.Dislikes</td>

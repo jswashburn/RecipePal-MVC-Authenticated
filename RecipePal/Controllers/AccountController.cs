@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RecipePal.Models;
+using RecipePal.Models.Identity;
+using RecipePal.ViewModels;
 using System.Threading.Tasks;
 
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -35,7 +37,7 @@ namespace RecipePal.Controllers
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
-            Login login = new Login
+            LoginViewModel login = new LoginViewModel
             {
                 ReturnUrl = returnUrl
             };
@@ -45,7 +47,7 @@ namespace RecipePal.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Login login)
+        public async Task<IActionResult> Login(LoginViewModel login)
         {
             if (ModelState.IsValid)
             {

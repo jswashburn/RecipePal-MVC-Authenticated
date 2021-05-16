@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RecipePal.Models;
+using RecipePal.Models.Identity;
+using RecipePal.ViewModels;
 using System.Threading.Tasks;
 
 namespace RecipePal.Controllers
@@ -122,17 +123,17 @@ namespace RecipePal.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Chef chef)
+        public async Task<IActionResult> Create(LoginViewModel login)
         {
             if (ModelState.IsValid)
             {
                 var appUser = new AppUser
                 {
-                    UserName = chef.UserName,
-                    Email = chef.Email
+                    UserName = login.UserName,
+                    Email = login.Email
                 };
 
-                IdentityResult result = await _userManager.CreateAsync(appUser, chef.Password);
+                IdentityResult result = await _userManager.CreateAsync(appUser, login.Password);
                 if (result.Succeeded)
                     return RedirectToAction(nameof(Index));
 
@@ -140,7 +141,7 @@ namespace RecipePal.Controllers
                     ModelState.AddModelError("", err.Description);
             }
 
-            return View(chef);
+            return View(login);
         }
     }
 }

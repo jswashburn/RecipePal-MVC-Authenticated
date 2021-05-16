@@ -158,7 +158,7 @@ namespace RecipePal.Data
                 {
                     Id = 1,
                     CookbookId = 1,
-                    UserId = 1,
+                    OwnerProfileId = 1,
                     Text = "This is awesome!",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -167,7 +167,7 @@ namespace RecipePal.Data
                 {
                     Id = 2,
                     CookbookId = 2,
-                    UserId = 1,
+                    OwnerProfileId = 1,
                     Text = "This is kind-of awesome!",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -176,7 +176,7 @@ namespace RecipePal.Data
                 {
                     Id = 3,
                     CookbookId = 1,
-                    UserId = 2,
+                    OwnerProfileId = 2,
                     Text = "This is gross!!",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -185,7 +185,7 @@ namespace RecipePal.Data
                 {
                     Id = 4,
                     CookbookId = 2,
-                    UserId = 2,
+                    OwnerProfileId = 2,
                     Text = "This is not bad",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -198,7 +198,7 @@ namespace RecipePal.Data
                 new Cookbook
                 {
                     Id = 1,
-                    ChefId = 1,
+                    OwnerProfileId = 1,
                     Title = "Southern Favorites",
                     CuisineType = "Southern",
                     Likes = RandLikes,
@@ -207,7 +207,7 @@ namespace RecipePal.Data
                 new Cookbook
                 {
                     Id = 2,
-                    ChefId = 1,
+                    OwnerProfileId = 1,
                     Title = "Mrs. Claus Secret Recipes",
                     CuisineType = "Christmas",
                     Likes = RandLikes,
@@ -216,7 +216,7 @@ namespace RecipePal.Data
                 new Cookbook
                 {
                     Id = 3,
-                    ChefId = 2,
+                    OwnerProfileId = 2,
                     Title = "Cajun Creations",
                     CuisineType = "Cajun",
                     Likes = RandLikes,
@@ -225,7 +225,7 @@ namespace RecipePal.Data
                 new Cookbook
                 {
                     Id = 4,
-                    ChefId = 2,
+                    OwnerProfileId = 2,
                     Title = "Potions and poisons",
                     CuisineType = "Fantasy",
                     Likes = RandLikes,
@@ -235,19 +235,17 @@ namespace RecipePal.Data
 
         static void SeedUsers(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Chef>().HasData(
-                new Chef
+            modelBuilder.Entity<Profile>().HasData(
+                new Profile
                 {
                     Id = 1,
                     UserName = "John J. Jingleheimer",
-                    Password = "hash",
                     Email = "jjingleheimer@northpole.com"
                 },
-                new Chef
+                new Profile
                 {
                     Id = 2,
                     UserName = "wwishy",
-                    Password = "P@55w0RD",
                     Email = "jsw@example.com"
                 });
         }

@@ -1,4 +1,4 @@
-﻿using RecipePal.Models;
+﻿using RecipePal.Models.Abstractions;
 using System.Collections.Generic;
 
 namespace RecipePal.Repositories

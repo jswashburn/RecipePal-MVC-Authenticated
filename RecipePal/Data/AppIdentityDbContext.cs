@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using RecipePal.Models;
+using RecipePal.Models.Identity;
 
 namespace RecipePal.Data
 {

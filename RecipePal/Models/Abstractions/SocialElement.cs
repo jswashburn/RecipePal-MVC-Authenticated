@@ -1,4 +1,4 @@
-﻿namespace RecipePal.Models
+﻿namespace RecipePal.Models.Abstractions
 {
     public interface ISocialElement
     {

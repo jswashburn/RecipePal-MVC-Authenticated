@@ -18,14 +18,14 @@ namespace RecipePal.Services
     public class CookbookBrowsingService : ICookbookBrowsingService
     {
         readonly IRepository<Cookbook> _cookbooksRepo;
-        readonly IRepository<Chef> _chefsRepo;
+        readonly IRepository<Profile> _profilesRepo;
         readonly IRepository<Recipe> _recipesRepo;
 
-        public CookbookBrowsingService(IRepository<Cookbook> cookbooks, IRepository<Chef> chefs,
-            IRepository<Recipe> recipes)
+        public CookbookBrowsingService(IRepository<Cookbook> cookbooks,
+            IRepository<Profile> profiles, IRepository<Recipe> recipes)
         {
             _cookbooksRepo = cookbooks;
-            _chefsRepo = chefs;
+            _profilesRepo = profiles;
             _recipesRepo = recipes;
         }
 
@@ -35,35 +35,27 @@ namespace RecipePal.Services
             foreach (Cookbook cookbook in allCookbooks)
             {
                 cookbook.Recipes = GetRecipes(cookbook.Id);
-                cookbook.Chef = GetChef(cookbook.ChefId);
+                cookbook.OwnerProfile = GetProfile(cookbook.OwnerProfileId);
             }
 
-            var vm = new AllCookbooksViewModel { Cookbooks = allCookbooks };
-
-            return vm;
+            return new AllCookbooksViewModel { Cookbooks = allCookbooks };
         }
 
         public CookbookViewModel CreateCookbookViewModel(int cookbookId)
         {
             Cookbook cookbook = _cookbooksRepo.Get(cookbookId);
-            cookbook.Chef = GetChef(cookbookId);
+            cookbook.OwnerProfile = GetProfile(cookbook.OwnerProfileId);
             cookbook.Recipes = GetRecipes(cookbookId);
 
-            var vm = new CookbookViewModel { Cookbook = cookbook };
-
-            return vm;
+            return new CookbookViewModel { Cookbook = cookbook };
         }
 
-        Chef GetChef(int id)
-        {
-            return _chefsRepo.Get(id);
-        }
+        Profile GetProfile(int profileId) => 
+            _profilesRepo.Get().FirstOrDefault(p => p.Id == profileId);
 
-        List<Recipe> GetRecipes(int cookbookId)
-        {
-            return _recipesRepo.Get()
+        List<Recipe> GetRecipes(int cookbookId) =>
+            _recipesRepo.Get()
                 .Where(r => r.CookbookId == cookbookId)
                 .ToList();
-        }
     }
 }

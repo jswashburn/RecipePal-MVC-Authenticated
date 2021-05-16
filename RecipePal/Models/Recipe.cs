@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using RecipePal.Models.Abstractions;
+using System.Collections.Generic;
 
 namespace RecipePal.Models
 {

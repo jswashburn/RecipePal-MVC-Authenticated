@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RecipePal.Data;
 using RecipePal.IdentityPolicy;
-using RecipePal.Models;
+using RecipePal.Models.Identity;
 using RecipePal.Repositories;
 using RecipePal.Services;
 using System;
@@ -37,14 +37,14 @@ namespace RecipePal
 
         #region Configuration Methods
 
-        static void AddRecipePalServices(IServiceCollection services)
+        void AddRecipePalServices(IServiceCollection services)
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ICookbookBrowsingService, CookbookBrowsingService>();
             services.AddScoped<IRecipeBrowsingService, RecipeBrowsingService>();
         }
 
-        static void ConfigureCookies(IServiceCollection services)
+        void ConfigureCookies(IServiceCollection services)
         {
             services.ConfigureApplicationCookie(options =>
             {
@@ -54,7 +54,7 @@ namespace RecipePal
             });
         }
 
-        static void ConfigureOptions(IServiceCollection services)
+        void ConfigureOptions(IServiceCollection services)
         {
             services.Configure<IdentityOptions>(options =>
             {
@@ -67,8 +67,15 @@ namespace RecipePal
             });
         }
 
-        static void AddIdentity(IServiceCollection services)
+        void AddIdentity(IServiceCollection services)
         {
+            //services.AddAuthentication().AddGoogle(options =>
+            //{
+            //    options.ClientId = Configuration["OAuth:Google:ClientID"];
+            //    options.ClientSecret = Configuration["OAuth:Google:ClientSecret"];
+            //    options.SignInScheme = IdentityConstants.ExternalScheme;
+            //});
+
             services.AddTransient<IPasswordValidator<AppUser>, RecipePalPasswordPolicy>();
             services.AddTransient<IUserValidator<AppUser>, RecipePalUserPolicy>();
 

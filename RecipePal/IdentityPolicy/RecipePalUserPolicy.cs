@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using RecipePal.Models;
+using RecipePal.Models.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

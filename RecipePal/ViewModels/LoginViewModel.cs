@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RecipePal.Models
+namespace RecipePal.ViewModels
 {
-    public class Chef : BaseEntity
+    public class LoginViewModel
     {
         [Required]
         [RegularExpression(@"\w{6,20}")]
@@ -19,6 +18,6 @@ namespace RecipePal.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        public ICollection<Cookbook> Cookbooks { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

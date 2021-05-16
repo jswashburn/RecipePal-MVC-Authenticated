@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RecipePal.Data;
-using RecipePal.Models;
+using RecipePal.Models.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

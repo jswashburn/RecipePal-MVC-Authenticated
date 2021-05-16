@@ -1,4 +1,4 @@
-﻿@model Login
+﻿@model RecipePal.ViewModels.LoginViewModel
 
 <h1 class="bg-info text-white">Login</h1>
 <div class="text-danger" asp-validation-summary="All"></div>
@@ -14,4 +14,5 @@
         <input asp-for="Password" class="form-control" />
     </div>
     <button class="btn btn-primary" type="submit">Log In</button>
+    @*<a class="btn btn-info" asp-action="GoogleLogin">Login with Google</a>*@
 </form>
