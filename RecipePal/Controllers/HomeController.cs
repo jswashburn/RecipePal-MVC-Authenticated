@@ -16,7 +16,6 @@ namespace RecipePal.Controllers
             _cookbookBrowsingService = cookbookBrowsingService;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             AllCookbooksViewModel vm = _cookbookBrowsingService.CreateAllCookbooksViewModel();
