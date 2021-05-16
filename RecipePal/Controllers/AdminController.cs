@@ -9,12 +9,16 @@ namespace RecipePal.Controllers
     {
         readonly UserManager<AppUser> _userManager;
         readonly IPasswordHasher<AppUser> _passwordHasher;
+        readonly IUserValidator<AppUser> _userValidator;
+        readonly IPasswordValidator<AppUser> _passwordValidator;
 
-        public AdminController(UserManager<AppUser> userManager, 
-            IPasswordHasher<AppUser> passwordHasher)
+        public AdminController(UserManager<AppUser> userManager, IUserValidator<AppUser> userValidator,
+            IPasswordHasher<AppUser> passwordHasher, IPasswordValidator<AppUser> passwordValidator)
         {
             _userManager = userManager;
             _passwordHasher = passwordHasher;
+            _userValidator = userValidator;
+            _passwordValidator = passwordValidator;
         }
 
         public IActionResult Index()
@@ -53,8 +57,8 @@ namespace RecipePal.Controllers
 
             if (appUser != null)
             {
-                bool updatedEmail = TryUpdateEmail(email, appUser);
-                bool updatedPassword = TryUpdatePassword(password, appUser);
+                bool updatedEmail = await TryUpdateEmail(email, appUser);
+                bool updatedPassword = await TryUpdatePassword(password, appUser);
 
                 if (updatedEmail && updatedPassword)
                 {
@@ -70,23 +74,39 @@ namespace RecipePal.Controllers
             return View(appUser);
         }
 
-        bool TryUpdatePassword(string password, AppUser appUser)
+        async Task<bool> TryUpdatePassword(string password, AppUser appUser)
         {
             if (!string.IsNullOrEmpty(password))
             {
-                appUser.PasswordHash = _passwordHasher.HashPassword(appUser, password);
-                return true;
+                IdentityResult validationResult = await _passwordValidator
+                    .ValidateAsync(_userManager, appUser, password);
+
+                if (validationResult.Succeeded)
+                {
+                    appUser.PasswordHash = _passwordHasher.HashPassword(appUser, password);
+                    return true;
+                }
+                else foreach (IdentityError err in validationResult.Errors)
+                        ModelState.AddModelError("", err.Description);
             }
             else ModelState.AddModelError("", "Password cannot be empty");
             return false;
         }
 
-        bool TryUpdateEmail(string email, AppUser appUser)
+        async Task<bool> TryUpdateEmail(string email, AppUser appUser)
         {
             if (!string.IsNullOrEmpty(email))
             {
-                appUser.Email = email;
-                return true;
+                IdentityResult validationResult = await _userValidator
+                    .ValidateAsync(_userManager, appUser);
+
+                if (validationResult.Succeeded)
+                {
+                    appUser.Email = email;
+                    return true;
+                }
+                else foreach (IdentityError err in validationResult.Errors)
+                        ModelState.AddModelError("", err.Description);
             }
             else ModelState.AddModelError("", "Email cannot be empty");
             return false;
