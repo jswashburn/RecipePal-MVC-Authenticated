@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<AppUser>
 
-<h1 class="bg-info text-white">All Users</h1>
+<h1 class="bg-info text-white">Welcome @TempData["UserName"]</h1>
 <a asp-action="Create" class="btn btn-secondary">Create a User</a>
 
 <table class="table table-sm table-bordered">
