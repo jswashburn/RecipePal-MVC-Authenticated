@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RecipePal.Models;
 using RecipePal.Models.Identity;
+using RecipePal.Repositories;
 using RecipePal.ViewModels;
 using System.Threading.Tasks;
 
@@ -15,12 +17,14 @@ namespace RecipePal.Controllers
     {
         readonly UserManager<AppUser> _userManager;
         readonly SignInManager<AppUser> _signInManager;
+        readonly IRepository<Profile> _profilesRepo;
 
         public AccountController(UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager)
+            SignInManager<AppUser> signInManager, IRepository<Profile> profiles)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _profilesRepo = profiles;
         }
 
         public IActionResult Index()
@@ -32,6 +36,41 @@ namespace RecipePal.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Create(LoginViewModel loginViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var appUser = new AppUser
+                {
+                    UserName = loginViewModel.Profile.UserName,
+                    Email = loginViewModel.Email
+                };
+
+                IdentityResult result = await _userManager.CreateAsync(appUser, loginViewModel.Password);
+                if (result.Succeeded)
+                {
+                    _profilesRepo.Insert(new Profile 
+                    { 
+                        UserName = loginViewModel.Profile.UserName
+                    });
+                    return RedirectToAction(nameof(Index));
+                }
+
+                foreach (IdentityError err in result.Errors)
+                    ModelState.AddModelError("", err.Description);
+            }
+
+            return View(loginViewModel);
         }
 
         [AllowAnonymous]
