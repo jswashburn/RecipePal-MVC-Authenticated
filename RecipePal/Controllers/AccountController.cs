@@ -26,6 +26,12 @@ namespace RecipePal.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
