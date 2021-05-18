@@ -6,6 +6,7 @@ using RecipePal.Models;
 using RecipePal.Models.Identity;
 using RecipePal.Repositories;
 using RecipePal.ViewModels;
+using System.Linq;
 using System.Threading.Tasks;
 
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -27,9 +28,18 @@ namespace RecipePal.Controllers
             _profilesRepo = profiles;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            if (_signInManager.IsSignedIn(User))
+            {
+                AppUser appUser = await _userManager.GetUserAsync(User);
+                Profile profile = _profilesRepo.Get().FirstOrDefault(p => p.Email == appUser.Email);
+                return View(new ProfileViewModel
+                {
+                    Profile = profile
+                });
+            }
+            return RedirectToAction(nameof(Create));
         }
 
         public async Task<IActionResult> Logout()
@@ -59,8 +69,9 @@ namespace RecipePal.Controllers
                 IdentityResult result = await _userManager.CreateAsync(appUser, loginViewModel.Password);
                 if (result.Succeeded)
                 {
-                    _profilesRepo.Insert(new Profile 
-                    { 
+                    _profilesRepo.Insert(new Profile
+                    {
+                        Email = appUser.Email,
                         UserName = loginViewModel.Profile.UserName
                     });
                     return RedirectToAction(nameof(Index));
