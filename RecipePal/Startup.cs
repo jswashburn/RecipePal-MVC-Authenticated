@@ -10,7 +10,6 @@ using RecipePal.IdentityPolicy;
 using RecipePal.Models.Identity;
 using RecipePal.Repositories;
 using RecipePal.Services;
-using System;
 
 namespace RecipePal
 {
@@ -28,33 +27,22 @@ namespace RecipePal
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            AddRecipePalServices(services);
             AddDbContexts(services);
             AddIdentity(services);
-            AddRecipePalServices(services);
-            ConfigureOptions(services);
-            ConfigureCookies(services);
+            ConfigureIdentityOptions(services);
         }
 
         #region Configuration Methods
 
         void AddRecipePalServices(IServiceCollection services)
         {
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IRepositoryFactory, RepositoryFactory>();
             services.AddScoped<ICookbookBrowsingService, CookbookBrowsingService>();
             services.AddScoped<IRecipeBrowsingService, RecipeBrowsingService>();
         }
 
-        void ConfigureCookies(IServiceCollection services)
-        {
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.Name = ".AspNetCore.Identity.Application";
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-                options.SlidingExpiration = true;
-            });
-        }
-
-        void ConfigureOptions(IServiceCollection services)
+        void ConfigureIdentityOptions(IServiceCollection services)
         {
             services.Configure<IdentityOptions>(options =>
             {
@@ -69,13 +57,6 @@ namespace RecipePal
 
         void AddIdentity(IServiceCollection services)
         {
-            //services.AddAuthentication().AddGoogle(options =>
-            //{
-            //    options.ClientId = Configuration["OAuth:Google:ClientID"];
-            //    options.ClientSecret = Configuration["OAuth:Google:ClientSecret"];
-            //    options.SignInScheme = IdentityConstants.ExternalScheme;
-            //});
-
             services.AddTransient<IPasswordValidator<AppUser>, RecipePalPasswordPolicy>();
             services.AddTransient<IUserValidator<AppUser>, RecipePalUserPolicy>();
 
@@ -86,11 +67,6 @@ namespace RecipePal
 
         void AddDbContexts(IServiceCollection services)
         {
-            services.AddDbContext<RPDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("RPDbContext");
-            });
-
             services.AddDbContext<AppIdentityDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Identity"));

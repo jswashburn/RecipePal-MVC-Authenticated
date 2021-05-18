@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RecipePal.Data;
 using RecipePal.Models.Abstractions;
 using System;
@@ -8,14 +7,13 @@ using System.Linq;
 
 namespace RecipePal.Repositories
 {
-    public class Repository<TContext, TModel> : IRepository<TModel> 
-        where TModel : BaseEntity 
-        where TContext : IdentityDbContext
+    public class Repository<TModel> : IRepository<TModel> 
+        where TModel : class, IEntity
     {
-        TContext _context;
+        AppIdentityDbContext _context;
         DbSet<TModel> _entities;
 
-        public Repository(TContext context)
+        public Repository(AppIdentityDbContext context)
         {
             _context = context;
             _entities = _context.Set<TModel>();
