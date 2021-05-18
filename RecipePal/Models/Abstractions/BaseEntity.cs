@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RecipePal.Models
+namespace RecipePal.Models.Abstractions
 {
     public interface IEntity
     {

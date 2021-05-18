@@ -8,7 +8,7 @@ namespace RecipePal.Data
         public DbSet<Cookbook> Cookbooks { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Note> Notes { get; set; }
-        public DbSet<Chef> Users { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
         public RPDbContext(DbContextOptions<RPDbContext> options) : base(options)
@@ -16,6 +16,10 @@ namespace RecipePal.Data
             Database.EnsureCreated();
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.Seed();
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Seed();
+        }
     }
 }

@@ -1,6 +1,6 @@
-﻿@model ChefViewModel
+﻿@model RecipePal.ViewModels.ProfileViewModel
 
-<h1>Hi, @Model.Chef.Username!</h1>
+<h1>Hi, @Model.Profile.UserName!</h1>
 
 <div class="text-center">
     <h2>Your cookbooks</h2>
@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var cookbook in Model.Chef.Cookbooks)
+            @foreach (var cookbook in Model.Profile.Cookbooks)
             {
             <tr>
                 <td>

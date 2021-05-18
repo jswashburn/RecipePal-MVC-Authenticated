@@ -6,7 +6,7 @@ namespace RecipePal.Data
 {
     public static class ModelBuilderExtensions
     {
-        static Random _rng = new Random();
+        static readonly Random _rng = new Random();
 
         static int RandLikes => _rng.Next(0, 1000);
         static int RandDislikes => _rng.Next(0, 250);
@@ -14,7 +14,7 @@ namespace RecipePal.Data
         // Alter/Amend seed data here. EF will make the appropriate modifications to the DB.
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            SeedUsers(modelBuilder);
+            SeedProfiles(modelBuilder);
             SeedCookbooks(modelBuilder);
             SeedComments(modelBuilder);
             SeedRecipes(modelBuilder);
@@ -158,7 +158,7 @@ namespace RecipePal.Data
                 {
                     Id = 1,
                     CookbookId = 1,
-                    UserId = 1,
+                    OwnerProfileId = 1,
                     Text = "This is awesome!",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -167,7 +167,7 @@ namespace RecipePal.Data
                 {
                     Id = 2,
                     CookbookId = 2,
-                    UserId = 1,
+                    OwnerProfileId = 1,
                     Text = "This is kind-of awesome!",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -176,7 +176,7 @@ namespace RecipePal.Data
                 {
                     Id = 3,
                     CookbookId = 1,
-                    UserId = 2,
+                    OwnerProfileId = 2,
                     Text = "This is gross!!",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -185,7 +185,7 @@ namespace RecipePal.Data
                 {
                     Id = 4,
                     CookbookId = 2,
-                    UserId = 2,
+                    OwnerProfileId = 2,
                     Text = "This is not bad",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -198,8 +198,8 @@ namespace RecipePal.Data
                 new Cookbook
                 {
                     Id = 1,
-                    ChefId = 1,
-                    Title = "Southern Favorites",
+                    OwnerProfileId = 1,
+                    Title = "Southern",
                     CuisineType = "Southern",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -207,8 +207,8 @@ namespace RecipePal.Data
                 new Cookbook
                 {
                     Id = 2,
-                    ChefId = 1,
-                    Title = "Mrs. Claus Secret Recipes",
+                    OwnerProfileId = 1,
+                    Title = "Christmas Recipes",
                     CuisineType = "Christmas",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -216,8 +216,8 @@ namespace RecipePal.Data
                 new Cookbook
                 {
                     Id = 3,
-                    ChefId = 2,
-                    Title = "Cajun Creations",
+                    OwnerProfileId = 2,
+                    Title = "Cajun",
                     CuisineType = "Cajun",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -225,7 +225,7 @@ namespace RecipePal.Data
                 new Cookbook
                 {
                     Id = 4,
-                    ChefId = 2,
+                    OwnerProfileId = 2,
                     Title = "Potions and poisons",
                     CuisineType = "Fantasy",
                     Likes = RandLikes,
@@ -233,22 +233,20 @@ namespace RecipePal.Data
                 });
         }
 
-        static void SeedUsers(ModelBuilder modelBuilder)
+        static void SeedProfiles(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Chef>().HasData(
-                new Chef
+            modelBuilder.Entity<Profile>().HasData(
+                new Profile
                 {
                     Id = 1,
-                    Username = "John J. Jingleheimer",
-                    Password = "hash",
-                    Email = "jjingleheimer@northpole.com"
+                    Email = "washburn1197@gmail.com",
+                    UserName = "wwishy23",
                 },
-                new Chef
+                new Profile
                 {
                     Id = 2,
-                    Username = "wwishy",
-                    Password = "P@55w0RD",
-                    Email = "jsw@example.com"
+                    Email = "jwashburn123@gmail.com",
+                    UserName = "washboosh2323"
                 });
         }
     }

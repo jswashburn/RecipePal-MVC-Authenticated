@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RecipePal.Models.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace RecipePal.Models
 {
