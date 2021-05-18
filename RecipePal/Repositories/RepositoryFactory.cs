@@ -10,9 +10,9 @@ namespace RecipePal.Repositories
 
     public class RepositoryFactory : IRepositoryFactory
     {
-        readonly AppIdentityDbContext _context;
+        readonly RPDbContext _context;
 
-        public RepositoryFactory(AppIdentityDbContext context)
+        public RepositoryFactory(RPDbContext context)
         {
             _context = context;
         }

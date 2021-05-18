@@ -71,6 +71,11 @@ namespace RecipePal
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Identity"));
             });
+
+            services.AddDbContext<RPDbContext>(options =>
+            {
+                options.UseInMemoryDatabase("RPDbContext");
+            });
         }
 
         #endregion

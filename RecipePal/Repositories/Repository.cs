@@ -7,13 +7,13 @@ using System.Linq;
 
 namespace RecipePal.Repositories
 {
-    public class Repository<TModel> : IRepository<TModel> 
+    public class Repository<TModel> : IRepository<TModel>
         where TModel : class, IEntity
     {
-        AppIdentityDbContext _context;
+        RPDbContext _context;
         DbSet<TModel> _entities;
 
-        public Repository(AppIdentityDbContext context)
+        public Repository(RPDbContext context)
         {
             _context = context;
             _entities = _context.Set<TModel>();
