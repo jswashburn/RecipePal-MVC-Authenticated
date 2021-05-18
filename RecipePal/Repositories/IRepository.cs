@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace RecipePal.Repositories
 {
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<TModel> where TModel : IEntity
     {
-        IEnumerable<T> Get();
-        T Get(int id);
-        T Insert(T item);
-        T Delete(int id);
-        T Update(T item);
+        IEnumerable<TModel> Get();
+        TModel Get(int id);
+        TModel Insert(TModel item);
+        TModel Delete(int id);
+        TModel Update(TModel item);
         void Save();
     }
 }

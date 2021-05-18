@@ -6,7 +6,7 @@ namespace RecipePal.Data
 {
     public static class ModelBuilderExtensions
     {
-        static Random _rng = new Random();
+        static readonly Random _rng = new Random();
 
         static int RandLikes => _rng.Next(0, 1000);
         static int RandDislikes => _rng.Next(0, 250);
@@ -14,7 +14,7 @@ namespace RecipePal.Data
         // Alter/Amend seed data here. EF will make the appropriate modifications to the DB.
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            SeedUsers(modelBuilder);
+            SeedProfiles(modelBuilder);
             SeedCookbooks(modelBuilder);
             SeedComments(modelBuilder);
             SeedRecipes(modelBuilder);
@@ -199,7 +199,7 @@ namespace RecipePal.Data
                 {
                     Id = 1,
                     OwnerProfileId = 1,
-                    Title = "Southern Favorites",
+                    Title = "Southern",
                     CuisineType = "Southern",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -208,7 +208,7 @@ namespace RecipePal.Data
                 {
                     Id = 2,
                     OwnerProfileId = 1,
-                    Title = "Mrs. Claus Secret Recipes",
+                    Title = "Christmas Recipes",
                     CuisineType = "Christmas",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -217,7 +217,7 @@ namespace RecipePal.Data
                 {
                     Id = 3,
                     OwnerProfileId = 2,
-                    Title = "Cajun Creations",
+                    Title = "Cajun",
                     CuisineType = "Cajun",
                     Likes = RandLikes,
                     Dislikes = RandDislikes
@@ -233,18 +233,14 @@ namespace RecipePal.Data
                 });
         }
 
-        static void SeedUsers(ModelBuilder modelBuilder)
+        static void SeedProfiles(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Profile>().HasData(
                 new Profile
                 {
                     Id = 1,
-                    UserName = "John J. Jingleheimer",
-                },
-                new Profile
-                {
-                    Id = 2,
-                    UserName = "wwishy",
+                    Email = "washburn1197@gmail.com",
+                    UserName = "wwishy23",
                 });
         }
     }
