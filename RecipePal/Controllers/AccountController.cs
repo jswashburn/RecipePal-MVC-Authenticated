@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RecipePal.Models;
@@ -18,22 +17,24 @@ namespace RecipePal.Controllers
     {
         readonly UserManager<AppUser> _userManager;
         readonly SignInManager<AppUser> _signInManager;
-        readonly IRepository<Profile> _profilesRepo;
+        readonly IRepositoryFactory _repositoryFactory;
 
         public AccountController(UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager, IRepository<Profile> profiles)
+            SignInManager<AppUser> signInManager, IRepositoryFactory repositoryFactory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _profilesRepo = profiles;
+            _repositoryFactory = repositoryFactory;
         }
 
         public async Task<IActionResult> Index()
         {
+            IRepository<Profile> profilesRepo = _repositoryFactory.CreateRepository<Profile>();
+
             if (_signInManager.IsSignedIn(User))
             {
                 AppUser appUser = await _userManager.GetUserAsync(User);
-                Profile profile = _profilesRepo.Get().FirstOrDefault(p => p.Email == appUser.Email);
+                Profile profile = profilesRepo.Get().FirstOrDefault(p => p.Email == appUser.Email);
                 return View(new ProfileViewModel
                 {
                     Profile = profile
@@ -58,6 +59,8 @@ namespace RecipePal.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create(LoginViewModel loginViewModel)
         {
+            IRepository<Profile> profilesRepo = _repositoryFactory.CreateRepository<Profile>();
+
             if (ModelState.IsValid)
             {
                 var appUser = new AppUser
@@ -69,7 +72,7 @@ namespace RecipePal.Controllers
                 IdentityResult result = await _userManager.CreateAsync(appUser, loginViewModel.Password);
                 if (result.Succeeded)
                 {
-                    _profilesRepo.Insert(new Profile
+                    profilesRepo.Insert(new Profile
                     {
                         Email = appUser.Email,
                         UserName = loginViewModel.Profile.UserName

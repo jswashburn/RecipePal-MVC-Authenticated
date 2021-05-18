@@ -13,18 +13,18 @@ namespace RecipePal.Services
 
     public class RecipeBrowsingService : IRecipeBrowsingService
     {
-        readonly IRepository<Recipe> _recipesRepo;
-        readonly IRepository<Note> _notesRepo;
+        readonly IRepositoryFactory _repositoryFactory;
 
-        public RecipeBrowsingService(IRepository<Recipe> recipes, IRepository<Note> notes)
+        public RecipeBrowsingService(IRepositoryFactory repositoryFactory)
         {
-            _recipesRepo = recipes;
-            _notesRepo = notes;
+            _repositoryFactory = repositoryFactory;
         }
 
         public RecipeViewModel CreateRecipeViewModel(int recipeId)
         {
-            Recipe recipe = _recipesRepo.Get(recipeId);
+            IRepository<Recipe> recipesRepo = _repositoryFactory.CreateRepository<Recipe>();
+
+            Recipe recipe = recipesRepo.Get(recipeId);
             recipe.Notes = GetNotes(recipeId);
 
             RecipeViewModel vm = new RecipeViewModel { Recipe = recipe };
@@ -33,7 +33,9 @@ namespace RecipePal.Services
 
         List<Note> GetNotes(int recipeId)
         {
-            return _notesRepo.Get()
+            IRepository<Note> notesRepo = _repositoryFactory.CreateRepository<Note>();
+
+            return notesRepo.Get()
                 .Where(n => n.RecipeId == recipeId)
                 .ToList();
         }

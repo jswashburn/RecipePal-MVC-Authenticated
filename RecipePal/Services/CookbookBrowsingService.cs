@@ -10,28 +10,22 @@ namespace RecipePal.Services
     {
         AllCookbooksViewModel CreateAllCookbooksViewModel();
         CookbookViewModel CreateCookbookViewModel(int cookbookId);
-
-        // TODO: EditCookbookViewModel
-        // TODO: EditCookbooksViewModel
     }
 
     public class CookbookBrowsingService : ICookbookBrowsingService
     {
-        readonly IRepository<Cookbook> _cookbooksRepo;
-        readonly IRepository<Profile> _profilesRepo;
-        readonly IRepository<Recipe> _recipesRepo;
+        readonly IRepositoryFactory _repositoryFactory;
 
-        public CookbookBrowsingService(IRepository<Cookbook> cookbooks,
-            IRepository<Profile> profiles, IRepository<Recipe> recipes)
+        public CookbookBrowsingService(IRepositoryFactory repositoryFactory)
         {
-            _cookbooksRepo = cookbooks;
-            _profilesRepo = profiles;
-            _recipesRepo = recipes;
+            _repositoryFactory = repositoryFactory;
         }
 
         public AllCookbooksViewModel CreateAllCookbooksViewModel()
         {
-            IEnumerable<Cookbook> allCookbooks = _cookbooksRepo.Get();
+            IRepository<Cookbook> cookbooksRepo = _repositoryFactory.CreateRepository<Cookbook>();
+
+            IEnumerable<Cookbook> allCookbooks = cookbooksRepo.Get();
             foreach (Cookbook cookbook in allCookbooks)
             {
                 cookbook.Recipes = GetRecipes(cookbook.Id);
@@ -43,19 +37,29 @@ namespace RecipePal.Services
 
         public CookbookViewModel CreateCookbookViewModel(int cookbookId)
         {
-            Cookbook cookbook = _cookbooksRepo.Get(cookbookId);
+            IRepository<Cookbook> cookbooksRepo = _repositoryFactory.CreateRepository<Cookbook>();
+
+            Cookbook cookbook = cookbooksRepo.Get(cookbookId);
             cookbook.OwnerProfile = GetProfile(cookbook.OwnerProfileId);
             cookbook.Recipes = GetRecipes(cookbookId);
 
             return new CookbookViewModel { Cookbook = cookbook };
         }
 
-        Profile GetProfile(int profileId) => 
-            _profilesRepo.Get().FirstOrDefault(p => p.Id == profileId);
+        Profile GetProfile(int profileId)
+        {
+            IRepository<Profile> profilesRepo = _repositoryFactory.CreateRepository<Profile>();
 
-        List<Recipe> GetRecipes(int cookbookId) =>
-            _recipesRepo.Get()
+            return profilesRepo.Get().FirstOrDefault(p => p.Id == profileId);
+        }
+
+        List<Recipe> GetRecipes(int cookbookId)
+        {
+            IRepository<Recipe> recipesRepo = _repositoryFactory.CreateRepository<Recipe>();
+
+            return recipesRepo.Get()
                 .Where(r => r.CookbookId == cookbookId)
                 .ToList();
+        }
     }
 }
