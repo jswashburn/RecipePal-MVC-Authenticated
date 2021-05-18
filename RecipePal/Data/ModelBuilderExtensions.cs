@@ -241,6 +241,12 @@ namespace RecipePal.Data
                     Id = 1,
                     Email = "washburn1197@gmail.com",
                     UserName = "wwishy23",
+                },
+                new Profile
+                {
+                    Id = 2,
+                    Email = "jwashburn123@gmail.com",
+                    UserName = "washboosh2323"
                 });
         }
     }
