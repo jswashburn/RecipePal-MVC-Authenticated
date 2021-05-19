@@ -1,3 +1,49 @@
 ﻿@model RecipePal.ViewModels.ProfileViewModel
 
-<h1>Welcome to your account page, @Model.Profile.UserName!</h1>
+<h1>Hi, @Model.Profile.UserName!</h1>
+
+<h2>Your cookbooks</h2>
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                <button class="btn btn-success">
+                    Add
+                </button>
+            </th>
+            <th>Title</th>
+            <th>Date Added</th>
+            <th>Likes</th>
+            <th>Dislikes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cookbook in Model.Profile.Cookbooks)
+        {
+            <tr>
+                <td>
+                    <div class="btn-group" role="group">
+                        <form asp-controller="Cookbook" 
+                              asp-action="Delete" 
+                              asp-route-id="@cookbook.Id"
+                              asp-route-returnUrl="/Account"
+                              method="post">
+                            <button type="submit" class="btn btn-outline-danger rounded-pill m-1">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </td>
+                <td>
+                    <a asp-controller="Cookbook"
+                        asp-route-id="@cookbook.Id">
+                        @cookbook.Title
+                    </a>
+                </td>
+                <td>@cookbook.CreatedAt.ToShortDateString()</td>
+                <td>@cookbook.Likes</td>
+                <td>@cookbook.Dislikes</td>
+            </tr>
+        }
+    </tbody>
+</table>
