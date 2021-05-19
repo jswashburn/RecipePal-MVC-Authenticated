@@ -30,23 +30,19 @@ namespace RecipePal.Controllers
         public async Task<IActionResult> Index()
         {
             IRepository<Profile> profilesRepo = _repositoryFactory.CreateRepository<Profile>();
+            IRepository<Cookbook> cookbooksRepo = _repositoryFactory.CreateRepository<Cookbook>();
 
             if (_signInManager.IsSignedIn(User))
             {
                 AppUser appUser = await _userManager.GetUserAsync(User);
                 Profile profile = profilesRepo.Get().FirstOrDefault(p => p.Email == appUser.Email);
+                profile.Cookbooks = cookbooksRepo.Get().Where(c => c.OwnerProfileId == profile.Id);
                 return View(new ProfileViewModel
                 {
                     Profile = profile
                 });
             }
             return RedirectToAction(nameof(Create));
-        }
-
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]
@@ -121,6 +117,11 @@ namespace RecipePal.Controllers
                     "Login Failed: Invalid email or password");
             }
             return View(login);
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
