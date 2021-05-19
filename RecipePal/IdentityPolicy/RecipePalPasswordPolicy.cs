@@ -15,7 +15,9 @@ namespace RecipePal.IdentityPolicy
             var validationErrors = validationResult.Succeeded ?
                 new List<IdentityError>() : validationResult.Errors.ToList();
 
-            if (password.ToLower().Contains(user.UserName.ToLower()))
+            bool containsUsername = password.ToLower().Contains(user.UserName.ToLower());
+
+            if (containsUsername)
                 validationErrors.Add(new IdentityError
                 {
                     Description = "Password cannot contain username"

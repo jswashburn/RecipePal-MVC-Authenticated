@@ -1,13 +1,7 @@
 ﻿@model RecipePal.ViewModels.RecipeViewModel
 
-<h1 class="text-center">@Model.Recipe.Title</h1>
-
-@if (Model.CanEdit)
-{
-<button class="btn btn-success">
-    Add a note
-</button>
-}
+<h1>@Model.Recipe.Title</h1>
+<br />
 
 <div class="card-columns">
     @foreach (var note in Model.Recipe.Notes)
@@ -17,17 +11,6 @@
             <h5 class="card-header">@note.Title</h5>
             <p class="card-text">@note.Text</p>
         </div>
-        @if (Model.CanEdit)
-        {
-        <div class="card-footer">
-            <button class="btn btn-warning">
-                Edit
-            </button>
-            <button class="btn btn-danger">
-                Delete
-            </button>
-        </div>
-        }
     </div>
     }
 </div>

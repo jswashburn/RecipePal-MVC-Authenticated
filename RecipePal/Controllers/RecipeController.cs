@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RecipePal.Services;
 using RecipePal.ViewModels;
 
 namespace RecipePal.Controllers
 {
+    [Authorize]
     public class RecipeController : Controller
     {
         readonly IRecipeBrowsingService _recipeBrowsingService;
@@ -13,6 +15,7 @@ namespace RecipePal.Controllers
             _recipeBrowsingService = recipeBrowsingService;
         }
 
+        [AllowAnonymous]
         public IActionResult Index(int id)
         {
             RecipeViewModel vm = _recipeBrowsingService.CreateRecipeViewModel(id);

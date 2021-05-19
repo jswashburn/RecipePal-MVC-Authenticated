@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProfanityDetector.Interfaces;
+using ProfanityDetector;
 using RecipePal.Data;
 using RecipePal.IdentityPolicy;
 using RecipePal.Models.Identity;
@@ -37,6 +39,7 @@ namespace RecipePal
 
         void AddRecipePalServices(IServiceCollection services)
         {
+            services.AddScoped<IProfanityFilter, ProfanityFilter>();
             services.AddScoped<IRepositoryFactory, RepositoryFactory>();
             services.AddScoped<ICookbookBrowsingService, CookbookBrowsingService>();
             services.AddScoped<IRecipeBrowsingService, RecipeBrowsingService>();

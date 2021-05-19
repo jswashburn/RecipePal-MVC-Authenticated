@@ -3,11 +3,19 @@ using RecipePal.Models.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ProfanityDetector.Interfaces;
 
 namespace RecipePal.IdentityPolicy
 {
     public class RecipePalUserPolicy : UserValidator<AppUser>
     {
+        readonly IProfanityFilter _profanityFilter;
+
+        public RecipePalUserPolicy(IProfanityFilter profanityFilter)
+        {
+            _profanityFilter = profanityFilter;
+        }
+
         public override async Task<IdentityResult> ValidateAsync(
             UserManager<AppUser> userManager, AppUser appUser)
         {
@@ -15,16 +23,12 @@ namespace RecipePal.IdentityPolicy
             var validationErrors = validationResult.Succeeded ?
                 new List<IdentityError>() : validationResult.Errors.ToList();
 
-            if (appUser.UserName == "wwishy")
-                validationErrors.Add(new IdentityError
-                {
-                    Description = "Can't have that name its already mine >:("
-                });
+            bool isProfane = _profanityFilter.ContainsProfanity(appUser.UserName);
 
-            if (appUser.Email.ToLower().EndsWith("boogle.com"))
+            if (isProfane)
                 validationErrors.Add(new IdentityError
                 {
-                    Description = "Can't use boogle emails"
+                    Description = "Profanity detected in username"
                 });
 
             return validationErrors.Count == 0 ?

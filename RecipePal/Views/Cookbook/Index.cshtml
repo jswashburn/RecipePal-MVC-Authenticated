@@ -1,50 +1,31 @@
 ﻿@model RecipePal.ViewModels.CookbookViewModel
 
-<div class="text-center">
-    <h1 class="display-4">@Model.Cookbook.Title</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                @if (Model.CanEdit)
-                {
-                    <th>
-                        <button class="btn btn-success">
-                            Add
-                        </button>
-                    </th>
-                }
-                <th>Title</th>
-                <th>Date Added</th>
-                <th>Likes</th>
-                <th>Dislikes</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var recipe in Model.Cookbook.Recipes)
-            {
-                <tr>
-                    @if (Model.CanEdit)
-                    {
-                        <th scope="row">
-                            <button class="btn btn-warning">
-                                Edit
-                            </button>
-                            <button class="btn btn-danger">
-                                Delete
-                            </button>
-                        </th>
-                    }
-                    <td>
-                        <a asp-controller="Recipe"
-                           asp-route-id="@recipe.Id">
-                            @recipe.Title
-                        </a>
-                    </td>
-                    <td>@recipe.CreatedAt.ToShortDateString()</td>
-                    <td>@recipe.Likes / @recipe.Dislikes</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+<h1>@Model.Cookbook.Title</h1>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Title</th>
+            <th>Date Added</th>
+            <th>Likes</th>
+            <th>Dislikes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var recipe in Model.Cookbook.Recipes)
+        {
+        <tr>
+            <td>
+                <a asp-controller="Recipe"
+                   asp-route-id="@recipe.Id">
+                    @recipe.Title
+                </a>
+            </td>
+            <td>@recipe.CreatedAt.ToShortDateString()</td>
+            <td>@recipe.Likes</td>
+            <td>@recipe.Dislikes</td>
+        </tr>
+        }
+    </tbody>
+</table>
